@@ -1,0 +1,90 @@
+
+#include <iostream>
+using namespace std;
+struct Node{
+    int key;
+    Node *left=nullptr;
+    Node *right=nullptr;
+};
+struct Tree{
+    Node *Root=nullptr;
+    void push(int a,Node **cur)
+    {
+        if(*cur==nullptr){
+            Node *cur=new Node;
+            cur->key=a;//(*cur).key = a
+            return;
+        }
+        else{
+            if(a>(*cur)->key)
+            {
+                push(a,&(*cur)->right);//&(*cur)
+                cout<<"r"<<endl;
+
+            }
+            else {
+                push(a,&(*cur)->left);
+                cout<<"l"<<endl;
+
+            }
+        }
+        return;
+    }
+    void init(int key){
+        if (Root==nullptr)
+        {
+            Node *temp=new Node;
+            temp->key=key;
+            Root = temp;
+        }
+        return ;
+    }
+    void print(){
+        
+    }
+    void absoluteDelete(Node *node)//передавать root
+    {
+        deleting(node);
+        Root=nullptr;
+    }
+    void deleting(Node *node)
+    {
+        if(node==nullptr)
+        {
+            return;
+        }
+        deleting(node->left);
+        cout<<"L"<<endl;
+        deleting(node->right);
+        cout<<"R"<<endl;
+        
+        cout<<"deleting node : "<<node->key<<endl;
+        delete node;
+    }
+    void print_Tree(Node * p,int level)
+    {
+        if(p)
+        {
+            print_Tree(p->left,level + 1);
+            for(int i = 0;i< level;i++) cout<<"   ";
+            cout << p->key << endl;
+            print_Tree(p->right,level + 1);
+        }
+    }
+};
+int main(int argc, const char * argv[]) {
+    Tree *my=new Tree;
+    int arr[5] ={10,5,7,12,15};
+    for(int i=0;i<5;i++)
+    {
+        if(i==0){
+           my->init(arr[i]);
+        }
+        else {
+            my->push(arr[i], &my->Root);// почему потомки не остаются в памяти?
+        }
+    }
+    my->print_Tree(my->Root, 0);
+    my->absoluteDelete(my->Root);
+    return 0;
+}
