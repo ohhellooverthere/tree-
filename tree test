@@ -1,0 +1,74 @@
+
+#include <iostream>
+using namespace std;
+struct Node{
+    int key;
+    Node *left=nullptr;
+    Node *right=nullptr;
+};
+struct Tree{
+    Node *Root=nullptr;
+    void push(int a,Node **cur)
+    {
+        if(cur==nullptr){
+            Node *cur=new Node;
+            cur->key=a;//(*cur).key = a
+            return;
+        }
+        else{
+            if(a>(*cur)->key)
+            {
+                push(a,&(*cur)->right);//&(*cur)
+            }
+            else {
+                push(a,&(*cur)->left);
+            }
+        }
+        return;
+    }
+    Node* init(int key){
+        if (Root==nullptr)
+        {
+            Node *temp=new Node;
+            temp->key=key;
+            Root = temp;
+        }
+        return Root;
+    }
+    void print(){
+        
+    }
+    void absoluteDelete(Node *node)//передавать root
+    {
+        deleting(node);
+        Root=nullptr;
+    }
+    void deleting(Node *node)
+    {
+        if(node==nullptr)
+        {
+            return;
+        }
+        deleting(node->left);
+        deleting(node->right);
+        
+        cout<<"deleting node : "<<node->key<<endl;
+        delete node;
+    }
+};
+int main(int argc, const char * argv[]) {
+    Tree *my=new Tree;
+    int arr[5] ={10,5,7,12,15};
+     Node *root=new Node;
+    for(int i=0;i<5;i++)
+    {
+        if(i==0){
+           root=my->init(arr[i]);
+        }
+        else {
+            my->push(arr[i], &root);
+        }
+    }
+    my->absoluteDelete(my->Root);
+    return 0;
+}
